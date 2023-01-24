@@ -3,6 +3,16 @@ html, body {
   padding: 0;
 }
 
-canvas {
-  display: block;
+h1 {
+  text-align: center;
+}
+
+label {
+  font-size: 14px;
+}
+
+#sketch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
