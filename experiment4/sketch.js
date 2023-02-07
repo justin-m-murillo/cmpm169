@@ -127,6 +127,21 @@ function draw() {
   // START SPEAKER
   setCenter(width/2, height/2);
 
+  //// PARTICLES
+  if (isPlaying) {
+    let p = new Particle(100);
+    particles.push(p);
+  }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    if (!particles[i].edges()) {
+      particles[i].update(isEnergy);
+      particles[i].show(energyColor);
+    } else {
+      particles.splice(i, 1);
+    }
+  }
+
   //// TRIANGLES
   push();
   noFill();
@@ -180,20 +195,6 @@ function draw() {
 
   // END SPEAKER
   //////////////////////
-
-  if (isPlaying) {
-    let p = new Particle(100);
-    particles.push(p);
-  }
-
-  for (let i = particles.length - 1; i >= 0; i--) {
-    if (!particles[i].edges()) {
-      particles[i].update(isEnergy);
-      particles[i].show(energyColor);
-    } else {
-      particles.splice(i, 1);
-    }
-  }
 }
 
 function keyPressed() {
