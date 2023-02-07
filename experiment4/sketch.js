@@ -45,7 +45,7 @@ let oe_dist = 0;
 let oe_maxDistance = 320;
 
 function preload() {
-  song = loadSound('audio/all-i-need.mp3', () => {
+  song = loadSound('audio/bare-your-soul.mp3', () => {
     audioLoaded = true;
     song.pause();
     song.onended(() => {
