@@ -21,7 +21,11 @@ let energyTrigger = false;
 
 // Text Object Parameters
 let textObj = {
-  text: "SCROLL DOWN TO UPLOAD A SONG OR PRESS SPACE TO START PLAYING",
+  text1: "DRAG AND DROP A SONG ON THE PAGE",
+  text2: "OR PRESS SPACE TO START PLAYING",
+  size: 18,
+  x2: 50,
+  y2: 100,
   alpha: 1
 };
 
@@ -67,32 +71,31 @@ function windowResized() {
 function setup() {
   //window.alert('Scroll down to upload a song or press Space to play. Press Spacebar to pause/resume');
   let canvas = createCanvas(windowWidth, windowHeight);
-  input = createFileInput(readFile, false);
+  canvas.parent("#canvas");
+  canvas.drop(readFile);
   colorMode(HSB);
   angleMode(RADIANS);
+  textAlign(CENTER, CENTER);
 
   ampl = new p5.Amplitude();
   ampl.smooth(0.9);
   fft = new p5.FFT(0.9);
+
+  
 }
 
 function draw() {
   background(0);
 
   if (!isPlaying) {
-    push();
-    displayText(textObj, width/6, height/2, 14, 1);
-    pop();
-    input.show();
+    displayText(1);
+
     energyColor = ColorPicker.getDefaultColor();
     auraColor = energyColor;
     coreColor = energyColor;
   }
   else {
-    push();
-    displayText(textObj, width/6, height/2, 14, 0);
-    pop();
-    input.hide();
+    displayText(0);
   }
   
   let level = ampl.getLevel();
@@ -199,17 +202,15 @@ function keyPressed() {
   }
 }
 
-function displayText(textObj, x, y, size, alpha) {
-  if (textObj.alpha > alpha) {
-    textObj.alpha -= 0.01;
-  }
-  if (textObj.alpha < alpha) {
-    textObj.alpha += 0.01;
-  }
+function displayText(alpha) {
+  textObj.alpha += textObj.alpha < alpha ? 0.01 : -0.01;
   fill(255, textObj.alpha);
   stroke(255, textObj.alpha);
-  textSize(size);
-  text(textObj.text, x, y);
+  textSize(textObj.size);
+  let x = width/2;
+  let y = height * (3/4)
+  text(textObj.text1, x, y);
+  text(textObj.text2, x, y + 30);
 }
 
 function handlePause() {
