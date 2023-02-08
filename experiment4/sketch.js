@@ -13,6 +13,7 @@ const VOL_THRESHOLD = 230;
 let bar = 0;
 
 let particles = [];
+let particlesDrop = [];
 
 let coreColor;
 let auraColor;
@@ -69,7 +70,6 @@ function windowResized() {
 }
 
 function setup() {
-  //window.alert('Scroll down to upload a song or press Space to play. Press Spacebar to pause/resume');
   let canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent("#canvas");
   canvas.drop(readFile);
@@ -81,7 +81,6 @@ function setup() {
   ampl.smooth(0.9);
   fft = new p5.FFT(0.9);
 
-  
 }
 
 function draw() {
@@ -125,6 +124,7 @@ function draw() {
   }
 
   // START SPEAKER
+  resetMatrix();
   setCenter(width/2, height/2);
 
   //// PARTICLES
@@ -195,6 +195,31 @@ function draw() {
 
   // END SPEAKER
   //////////////////////
+
+  resetMatrix();
+  setCenter(0, 0);
+  push();
+  //console.log(`${width/2} ${height/2}`);
+  for (let i = particlesDrop.length - 1; i >= 0; i--) {
+    console.log(particlesDrop[i].vel.mag());
+    if (particlesDrop[i].justSpawned) {
+      particlesDrop[i].slowSpawn();
+    }
+    if (!particlesDrop[i].justSpawned) {
+      let vx = ((width/2) - particlesDrop[i].pos.x) * 0.05;
+      let vy = ((height/2) - particlesDrop[i].pos.y) * 0.05;
+      let v = createVector(vx, vy);
+      particlesDrop[i].applyForce(v);
+    }
+    if (particlesDrop[i].edges()) {
+      particlesDrop.splice(i, 1);
+      continue;
+    }
+    particlesDrop[i].update(isEnergy);
+    particlesDrop[i].show(energyColor);   
+  }
+  pop();
+
 }
 
 function keyPressed() {
@@ -225,21 +250,24 @@ function handlePause() {
   }
 }
 
-// function mousePressed() {
-//   if (!song.isPlaying() && audioLoaded) {
-//     song.play();
-//     isPlaying = true;
-//   }
-//   else {
-//     song.pause();
-//     isPlaying = false;
-//   }
-// }
+function spawnParticlesDrop() {
+  for (let i = 0; i < 25; i++) {
+    let p = new ParticleDrop(mouseX, mouseY, 2);
+    particlesDrop.push(p);
+  }
+}
 
 function readFile(file) {
-  console.log(file);
+  if (isPlaying) {
+    window.alert("Cannot upload while playing");
+    return;
+  }
   if (file.type === 'audio') {
+    spawnParticlesDrop();
     song = loadSound(file.data, loaded);
+  } 
+  else {
+    window.alert("Invalid file type");
   }
 }
 
