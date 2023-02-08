@@ -253,7 +253,7 @@ function spawnParticlesDrop() {
 
 function readFile(file) {
   if (isPlaying) {
-    window.alert("Cannot upload while playing. Press Space to pause");
+    window.alert("Cannot upload while playing. Press Space to pause.");
     return;
   }
   if (file.type === 'audio') {
