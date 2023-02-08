@@ -46,7 +46,7 @@ class ParticleDrop {
     }
 
     show(col) {
-        strokeWeight(2);
+        strokeWeight(3);
         stroke(col.h, col.s, col.b, this.alpha);
         fill(col.h, col.s, col.b, this.apha);
         line(this.oldPos.x, this.oldPos.y, this.pos.x, this.pos.y);

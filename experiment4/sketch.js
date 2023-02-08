@@ -100,10 +100,6 @@ function draw() {
   let level = ampl.getLevel();
   let spectrum = fft.analyze();
   let energy = fft.getEnergy(LOHZ, HIHZ);
-  // if (energy > VOL_THRESHOLD) {
-  //   bar++;
-  //   console.log(bar + ". " + energy);
-  // }
   if (!isEnergy && energy > VOL_THRESHOLD && !energyTrigger) {
     energyColor = ColorPicker.getRandomColor(energyColor);
     auraColor = ColorPicker.getRandomColor(energyColor);
@@ -199,9 +195,7 @@ function draw() {
   resetMatrix();
   setCenter(0, 0);
   push();
-  //console.log(`${width/2} ${height/2}`);
   for (let i = particlesDrop.length - 1; i >= 0; i--) {
-    console.log(particlesDrop[i].vel.mag());
     if (particlesDrop[i].justSpawned) {
       particlesDrop[i].slowSpawn();
     }
