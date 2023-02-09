@@ -8,8 +8,8 @@ let input;
 const BANDS = 128;
 let fft, ampl;
 const LOHZ = 20;
-const HIHZ = 200;
-const VOL_THRESHOLD = 230;
+const HIHZ = 120;
+const VOL_THRESHOLD = 234;
 let bar = 0;
 
 let particles = [];
@@ -46,7 +46,7 @@ let oe_dist = 0;
 let oe_maxDistance = 320;
 
 function preload() {
-  song = loadSound('audio/bare-your-soul.mp3', () => {
+  song = loadSound('audio/all-i-need.mp3', () => {
     audioLoaded = true;
     song.pause();
     song.onended(() => {
